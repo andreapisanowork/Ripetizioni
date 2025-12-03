@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il Tuo Tutor Scientifico - Ripetizioni Private</title>
+    <style>
+        /* --- VARIABILI & RESET --- */
+        :root {
+            --primary-color: #00563F; /* Verde Scuro richiesto */
+            --accent-color: #007a5a;
+            --text-color: #333;
+            --white: #ffffff;
+            --bg-light: #f4f7f6;
+            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-main);
+            color: var(--text-color);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+            padding-top: 60px; /* Spazio per l'header fisso */
+        }
+
+        /* --- 1. HEADER FISSO --- */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- 2. SEZIONE PRINCIPALE (CAROSELLO) --- */
+        .hero-carousel {
+            position: relative;
+            width: 100%;
+            height: 75vh; /* Requisito 75% altezza schermo */
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .carousel-track-container {
+            height: 100%;
+            width: 100%;
+        }
+
+        .carousel-track {
+            display: flex;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+            list-style: none;
+        }
+
+        .slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            /* Overlay scuro per leggibilità testo su immagini */
+            background-blend-mode: overlay;
+            background-color: rgba(0, 0, 0, 0.5); 
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Placeholder Sfondi - SOSTITUIRE URL */
+        .slide:nth-child(1) { background-image: url('https://via.placeholder.com/1920x1080/00563F/FFFFFF?text=Slide+1+Science'); }
+        .slide:nth-child(2) { background-image: url('https://via.placeholder.com/1920x1080/333333/FFFFFF?text=Slide+2+Teaching'); }
+        .slide:nth-child(3) { background-image: url('https://via.placeholder.com/1920x1080/444444/FFFFFF?text=Slide+3+Prices'); }
+
+        .slide-content {
+            color: var(--white);
+            max-width: 800px;
+            z-index: 2;
+        }
+
+        .slide-content h1 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+
+        .slide-content ul {
+            text-align: left;
+            display: inline-block;
+            list-style: none;
+        }
+
+        .slide-content ul li {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .slide-content ul li::before {
+            content: "✓";
+            color: #4CAF50;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        /* Stile Prezzi nella Slide 3 */
+        .price-container {
+            display: flex;
+            flex-direction: column; /* Mobile first */
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .price-card {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 15px;
+            border-radius: 8px;
+            flex: 1;
+        }
+        
+        .price-card strong {
+            display: block;
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        /* Frecce Carosello */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            padding: 15px;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 1.5rem;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .carousel-btn.prev { left: 15px; }
+        .carousel-btn.next { right: 15px; }
+
+        /* --- 3. SEZIONE APPUNTI (DRIVE) --- */
+        .section-container {
+            padding: 40px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+
+        .resources-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Mobile: 1 colonna */
+            gap: 20px;
+        }
+
+        .resource-card {
+            background: var(--white);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .resource-info h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .resource-info p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .download-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        /* --- 4. CONTATTI & FOOTER --- */
+        .contact-section {
+            background-color: #e9ecef;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-form input, 
+        .contact-form textarea {
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+        }
+
+        .btn-submit {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--accent-color);
+        }
+
+        footer {
+            background-color: #222;
+            color: #aaa;
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8rem;
+            margin-top: 40px;
+        }
+
+        /* --- RESPONSIVE DESKTOP --- */
+        @media (min-width: 768px) {
+            .price-container {
+                flex-direction: row; /* Desktop: Prezzi affiancati */
+            }
+            
+            .resources-grid {
+                grid-template-columns: repeat(3, 1fr); /* Desktop: 3 colonne risorse */
+            }
+
+            .slide-content h1 {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Tutor Scientifico</div>
+    </header>
+
+    <section class="hero-carousel">
+        <button class="carousel-btn prev" id="prevBtn">&#10094;</button>
+        <button class="carousel-btn next" id="nextBtn">&#10095;</button>
+        
+        <div class="carousel-track-container">
+            <ul class="carousel-track">
+                
+                <li class="slide current-slide">
+                    <div class="slide-content">
+                        <h1>Il Tuo Tutor: Tutoraggio per Tutte le Materie</h1>
+                        <p>Benvenuto! Offro supporto specializzato in Matematica, Fisica e Chimica, con un approccio chiaro ed efficace per studenti di ogni livello.</p>
+                    </div>
+                </li>
+
+                <li class="slide">
+                    <div class="slide-content">
+                        <h1>Il Mio Metodo: Flessibilità e Obiettivi</h1>
+                        <ul>
+                            <li>Focus Scientifico Approfondito e Pratico</li>
+                            <li>Piani di Studio 100% Personalizzati</li>
+                            <li>Supporto costante anche via chat</li>
+                            <li>Preparazione specifica per test ed esami</li>
+                        </ul>
+                    </div>
+                </li>
+
+                <li class="slide">
+                    <div class="slide-content">
+                        <h1>Tariffe Trasparenti</h1>
+                        <div class="price-container">
+                            <div class="price-card">
+                                <strong>Singola Lezione</strong>
+                                25€ / ora<br>
+                                <small>Ideale per dubbi specifici</small>
+                            </div>
+                            <div class="price-card">
+                                <strong>Pacchetto "Scienze"</strong>
+                                110€ / 5 ore<br>
+                                <small>Percorso di recupero</small>
+                            </div>
+                            <div class="price-card">
+                                <strong>Pacchetto "Esame"</strong>
+                                200€ / 10 ore<br>
+                                <small>Preparazione intensiva</small>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </div>
+    </section>
+
+    <section class="section-container">
+        <h2 class="section-title">Le Mie Risorse: Appunti di Studio</h2>
+        <div class="resources-grid">
+            
+            <a href="https://drive.google.com/tuo-link-1" target="_blank" class="resource-card">
+                <div class="resource-info">
+                    <h3>Formulario Fisica</h3>
+                    <p>Cinematica e Dinamica</p>
+                </div>
+                <div class="download-icon">&#128193;</div> </a>
+
+            <a href="https://drive.google.com/tuo-link-2" target="_blank" class="resource-card">
+                <div class="resource-info">
+                    <h3>Schemi Analisi 1</h3>
+                    <p>Limiti, Derivate e Integrali</p>
+                </div>
+                <div class="download-icon">&#128193;</div>
+            </a>
+
+            <a href="https://drive.google.com/tuo-link-3" target="_blank" class="resource-card">
+                <div class="resource-info">
+                    <h3>Chimica Organica</h3>
+                    <p>Nomenclatura e Reazioni base</p>
+                </div>
+                <div class="download-icon">&#128193;</div>
+            </a>
+
+        </div>
+    </section>
+
+    <section class="section-container contact-section">
+        <h2 class="section-title">Contattami</h2>
+        <form class="contact-form">
+            <input type="text" placeholder="Il tuo Nome" required>
+            <input type="email" placeholder="La tua Email" required>
+            <input type="text" placeholder="Materia di interesse">
+            <textarea rows="4" placeholder="Messaggio o richiesta particolare"></textarea>
+            <button type="submit" class="btn-submit">Invia Richiesta</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 Tutor Scientifico. Tutti i diritti riservati.</p>
+        <br>
+        <p style="font-size: 0.7rem; opacity: 0.7;">
+            NOTA LEGALE: Prestazione occasionale svolta ai sensi dell'art. 2222 c.c. 
+            Operazione fuori campo IVA ai sensi dell'art. 5 del D.P.R. 633/1972.
+            Servizio esente da obbligo di fatturazione elettronica.
+        </p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const track = document.querySelector('.carousel-track');
+            const slides = Array.from(track.children);
+            const nextButton = document.querySelector('#nextBtn');
+            const prevButton = document.querySelector('#prevBtn');
+
+            let currentSlideIndex = 0;
+
+            const updateSlidePosition = () => {
+                const width = slides[0].getBoundingClientRect().width;
+                track.style.transform = 'translateX(-' + (width * currentSlideIndex) + 'px)';
+            };
+
+            // Gestione ridimensionamento finestra
+            window.addEventListener('resize', updateSlidePosition);
+
+            nextButton.addEventListener('click', () => {
+                if (currentSlideIndex === slides.length - 1) {
+                    currentSlideIndex = 0; // Torna all'inizio
+                } else {
+                    currentSlideIndex++;
+                }
+                updateSlidePosition();
+            });
+
+            prevButton.addEventListener('click', () => {
+                if (currentSlideIndex === 0) {
+                    currentSlideIndex = slides.length - 1; // Vai alla fine
+                } else {
+                    currentSlideIndex--;
+                }
+                updateSlidePosition();
+            });
+        });
+    </script>
+</body>
+</html>
