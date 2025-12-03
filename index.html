@@ -14,7 +14,7 @@
             --white: #ffffff;
             --bg-light: #f9f9f9;
             --font-main: 'Roboto', sans-serif;
-            --font-elegant: 'Playfair Display', serif; /* Per il corsivo bello */
+            --font-elegant: 'Playfair Display', serif;
             --header-height: 50px;
             --logo-size: 90px;
         }
@@ -26,7 +26,7 @@
             color: var(--text-color);
             background-color: var(--bg-light);
             padding-top: var(--header-height);
-            overflow-x: hidden; /* Evita scroll orizzontale pagina intera */
+            overflow-x: hidden;
         }
 
         /* --- 1. HEADER & LOGO --- */
@@ -43,10 +43,9 @@
             justify-content: center;
         }
 
-        /* Il contenitore del logo */
         .logo-container {
             position: absolute;
-            top: 0; /* Parte dall'alto */
+            top: 0;
             width: var(--logo-size);
             height: var(--logo-size);
             background-color: var(--white);
@@ -58,16 +57,18 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
             z-index: 1001;
             overflow: hidden;
+            padding: 5px; /* Un po' di padding per il logo */
         }
 
-        /* Placeholder immagine logo */
+        /* Stile e Ricolorazione Logo */
         .logo-img {
-            width: 80%;
+            width: 100%;
             height: auto;
-            opacity: 0.8; 
+            /* Filtro CSS per ricolorare l'immagine nera in verde scuro (#00563F) */
+            filter: brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(2424%) hue-rotate(126deg) brightness(93%) contrast(103%);
         }
 
-        /* --- 2. CAROUSEL SWIPE (CSS SNAP) --- */
+        /* --- 2. CAROUSEL SWIPE INFINITO --- */
         .hero-carousel {
             position: relative;
             width: 100%;
@@ -79,22 +80,23 @@
             display: flex;
             width: 100%;
             height: 100%;
-            overflow-x: auto; /* Abilita scroll orizzontale */
-            scroll-snap-type: x mandatory; /* Obbliga lo stop sulla slide */
-            scroll-behavior: smooth;
-            -webkit-overflow-scrolling: touch; /* Fluidità su iOS */
-            scrollbar-width: none; /* Nasconde scrollbar Firefox */
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
         }
 
-        .carousel-track::-webkit-scrollbar {
-            display: none; /* Nasconde scrollbar Chrome/Safari */
+        .carousel-track.no-smooth {
+            scroll-behavior: auto !important; /* Disabilita smooth scroll per il reset */
         }
+
+        .carousel-track::-webkit-scrollbar { display: none; }
 
         .slide {
             flex: 0 0 100%;
             width: 100%;
             height: 100%;
-            scroll-snap-align: center; /* Si ferma al centro */
+            scroll-snap-align: center;
             position: relative;
             background-size: cover;
             background-position: center;
@@ -104,26 +106,26 @@
             text-align: center;
         }
 
-        /* Overlay scuro integrato */
         .slide::before {
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 50, 30, 0.6); /* Tinta verde scuro trasparente */
+            background: rgba(0, 50, 30, 0.7); /* Overlay più scuro per le tariffe */
             z-index: 1;
         }
 
-        /* Immagini Placeholder */
-        .slide:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1920&q=80'); } /* Science Math */
-        .slide:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1580894732444-8efbae487984?auto=format&fit=crop&w=1920&q=80'); } /* Study */
-        .slide:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1920&q=80'); } /* Calculation */
+        /* Immagini Sfondo */
+        .slide:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1920&q=80'); }
+        .slide:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1580894732444-8efbae487984?auto=format&fit=crop&w=1920&q=80'); }
+        .slide:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1920&q=80'); }
 
         .slide-content {
             position: relative;
             z-index: 2;
             color: var(--white);
             padding: 20px;
-            max-width: 600px;
+            max-width: 800px; /* Aumentato per la tabella */
+            width: 100%;
         }
 
         .slide-content h2 {
@@ -142,10 +144,54 @@
         .slide-content ul li { margin: 8px 0; }
         .slide-content ul li::before { content: "• "; color: #4CAF50; font-size: 1.5rem; vertical-align: middle; }
 
-        /* Indicatore Oscillante (Swipe Hint) */
+        /* Stile Tabella Tariffe nel Carosello */
+        .slide-table-container {
+            background: rgba(255, 255, 255, 0.1); /* Sfondo semitrasparente */
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .modern-table {
+            width: 100%;
+            border-collapse: collapse;
+            color: var(--white);
+        }
+
+        .modern-table tr {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .modern-table tr:last-child { border-bottom: none; }
+
+        .modern-table td {
+            padding: 15px 10px;
+            font-family: var(--font-elegant);
+            font-style: italic;
+            font-size: 1.2rem;
+            text-align: left;
+        }
+
+        .modern-table td.price {
+            text-align: right;
+            font-weight: 700;
+            color: #4CAF50; /* Verde più chiaro per contrasto */
+            white-space: nowrap;
+        }
+
+        .modern-table .details {
+            display: block;
+            font-family: var(--font-main);
+            font-style: normal;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+        
         .swipe-hint {
             position: absolute;
-            bottom: 30px;
+            bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
             color: rgba(255,255,255,0.7);
@@ -153,22 +199,18 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            pointer-events: none; /* Non cliccabile */
+            pointer-events: none;
         }
         
-        .hand-icon {
-            font-size: 2rem;
-            animation: oscillate 2s infinite ease-in-out;
-        }
-        
+        .hand-icon { font-size: 2rem; animation: oscillate 2s infinite ease-in-out; }
         .hint-text { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
 
         @keyframes oscillate {
             0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(20px); } /* Muove a destra e sinistra */
+            50% { transform: translateX(20px); }
         }
 
-        /* --- 3. SEZIONE TARIFFARIO (MODERNO) --- */
+        /* --- 3. SEZIONI CONTENUTO --- */
         .section-container {
             padding: 50px 20px;
             max-width: 800px;
@@ -184,48 +226,10 @@
             font-style: italic;
         }
 
-        .modern-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .modern-table tr {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Linea sottile */
-        }
-
-        .modern-table tr:last-child {
-            border-bottom: none;
-        }
-
-        .modern-table td {
-            padding: 20px 10px;
-            font-family: var(--font-elegant);
-            font-style: italic;
-            font-size: 1.3rem;
-            color: #444;
-        }
-
-        .modern-table td.price {
-            text-align: right;
-            font-weight: 700;
-            color: var(--primary-color);
-            white-space: nowrap;
-        }
-
-        .modern-table .details {
-            display: block;
-            font-family: var(--font-main);
-            font-style: normal;
-            font-size: 0.85rem;
-            color: #888;
-            margin-top: 5px;
-        }
-
-        /* --- 4. SEZIONE APPUNTI (DRIVE) --- */
+        /* --- 4. SEZIONE APPUNTI (Link Interni) --- */
         .resources-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
 
@@ -241,6 +245,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             transition: transform 0.2s;
             border-left: 4px solid var(--primary-color);
+            cursor: default; /* Indica che non è un link esterno */
         }
 
         .resource-card:active { transform: scale(0.98); }
@@ -261,6 +266,7 @@
             text-align: center;
             background-color: #fff;
             padding-bottom: 40px;
+            margin-top: 0; /* Rimosso margine superiore */
         }
 
         .social-icons {
@@ -282,11 +288,7 @@
             text-decoration: none;
         }
 
-        .social-btn svg {
-            width: 32px;
-            height: 32px;
-            fill: var(--primary-color);
-        }
+        .social-btn svg { width: 32px; height: 32px; fill: var(--primary-color); }
 
         .social-btn:hover {
             background-color: var(--primary-color);
@@ -311,15 +313,12 @@
 
     <header>
         <div class="logo-container">
-            <svg class="logo-img" viewBox="0 0 24 24" fill="none" stroke="#00563F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-            </svg>
+            <img src="image_0.png" alt="AD Ripetizioni Logo" class="logo-img">
         </div>
     </header>
 
     <section class="hero-carousel">
-        <div class="carousel-track">
+        <div class="carousel-track" id="carouselTrack">
             
             <div class="slide">
                 <div class="slide-content">
@@ -341,43 +340,41 @@
 
             <div class="slide">
                 <div class="slide-content">
-                    <h2>Investi nel Futuro</h2>
-                    <p>Tariffe chiare e pacchetti flessibili costruiti sulle tue esigenze.</p>
+                    <h2>Tariffe Trasparenti</h2>
+                    <div class="slide-table-container">
+                        <table class="modern-table">
+                            <tr>
+                                <td>
+                                    Lezione Singola
+                                    <span class="details">Per dubbi specifici o ripasso</span>
+                                </td>
+                                <td class="price">25€<br><small style="font-size:0.7rem; font-weight:400; opacity:0.7">/ora</small></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Pacchetto Scienze
+                                    <span class="details">5 ore di lezione (Mat/Fis)</span>
+                                </td>
+                                <td class="price">110€</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Full Immersion
+                                    <span class="details">10 ore preparazione esami</span>
+                                </td>
+                                <td class="price">200€</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
 
         </div>
 
         <div class="swipe-hint">
-            <div class="hand-icon">↔</div> <div class="hint-text">Scorri</div>
+            <div class="hand-icon">↔</div>
+            <div class="hint-text">Scorri</div>
         </div>
-    </section>
-
-    <section class="section-container">
-        <h2 class="section-title">Tariffe</h2>
-        <table class="modern-table">
-            <tr>
-                <td>
-                    Lezione Singola
-                    <span class="details">Per dubbi specifici o ripasso</span>
-                </td>
-                <td class="price">25€<br><small style="font-size:0.7rem; font-weight:400; color:#999">/ora</small></td>
-            </tr>
-            <tr>
-                <td>
-                    Pacchetto Scienze
-                    <span class="details">5 ore di lezione (Mat/Fis)</span>
-                </td>
-                <td class="price">110€</td>
-            </tr>
-            <tr>
-                <td>
-                    Full Immersion
-                    <span class="details">10 ore preparazione esami</span>
-                </td>
-                <td class="price">200€</td>
-            </tr>
-        </table>
     </section>
 
     <section class="section-container" style="background-color: #f4f7f6;">
@@ -388,14 +385,21 @@
                     <strong>Fisica: Formulario</strong><br>
                     <small style="color:#666">Meccanica e Dinamica</small>
                 </div>
-                <div class="download-icon">⬇</div>
+                <div class="download-icon">📄</div>
             </a>
             <a href="#" class="resource-card">
                 <div>
                     <strong>Matematica: Analisi</strong><br>
                     <small style="color:#666">Limiti e Derivate</small>
                 </div>
-                <div class="download-icon">⬇</div>
+                <div class="download-icon">📄</div>
+            </a>
+            <a href="#" class="resource-card">
+                <div>
+                    <strong>Chimica: Fondamenti</strong><br>
+                    <small style="color:#666">Tavola e Reazioni</small>
+                </div>
+                <div class="download-icon">📄</div>
             </a>
         </div>
     </section>
@@ -424,6 +428,50 @@
         </div>
     </section>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const track = document.getElementById('carouselTrack');
+            const slides = Array.from(track.children);
+            const slideWidth = slides[0].getBoundingClientRect().width;
+
+            // Clona la prima e l'ultima slide per l'effetto infinito
+            const firstClone = slides[0].cloneNode(true);
+            const lastClone = slides[slides.length - 1].cloneNode(true);
+
+            track.appendChild(firstClone);
+            track.insertBefore(lastClone, slides[0]);
+
+            // Posiziona inizialmente sulla prima slide "reale" (che ora è la seconda)
+            track.scrollLeft = slideWidth;
+
+            let isScrolling = false;
+
+            track.addEventListener('scroll', () => {
+                if (isScrolling) return;
+                isScrolling = true;
+
+                clearTimeout(track.scrollTimeout);
+                track.scrollTimeout = setTimeout(() => {
+                    const scrollLeft = track.scrollLeft;
+                    const trackWidth = track.scrollWidth;
+                    
+                    // Se siamo arrivati al clone dell'ultima slide (fine)
+                    if (scrollLeft + slideWidth >= trackWidth - 10) { // Tolleranza
+                        track.classList.add('no-smooth'); // Disabilita scroll fluido
+                        track.scrollLeft = slideWidth; // Salta alla prima slide reale
+                        setTimeout(() => { track.classList.remove('no-smooth'); }, 50);
+                    } 
+                    // Se siamo arrivati al clone della prima slide (inizio)
+                    else if (scrollLeft <= 10) { // Tolleranza
+                        track.classList.add('no-smooth');
+                        track.scrollLeft = trackWidth - (slideWidth * 2); // Salta all'ultima slide reale
+                        setTimeout(() => { track.classList.remove('no-smooth'); }, 50);
+                    }
+                    isScrolling = false;
+                }, 200); // Attendi la fine dello scroll
+            });
+        });
+    </script>
+
 </body>
 </html>
-
