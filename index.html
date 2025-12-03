@@ -161,42 +161,6 @@
             color: var(--white);
         }
 
-/* --- CSS PER TABELLA MISTA (Testo centrato + Elenco a sinistra) --- */
-
-/* Classe per centrare solo celle specifiche */
-.text-center {
-    text-align: center !important;
-}
-
-/* Classe per allineare a sinistra solo celle specifiche */
-.text-left {
-    text-align: left !important;
-}
-
-/* Stile per l'elenco puntato QUANDO è dentro una tabella */
-.modern-table ul {
-    list-style: none; /* Rimuove i pallini standard */
-    padding-left: 10px;
-    margin: 0;
-}
-
-.modern-table ul li {
-    margin-bottom: 10px;
-    font-family: var(--font-elegant); /* Mantiene il font elegante della tabella */
-    font-style: italic;
-    font-size: 1.1rem;
-}
-
-.modern-table ul li::before {
-    content: "• ";
-    color: #4CAF50; /* Il pallino verde */
-    font-size: 1.5rem;
-    vertical-align: sub;
-    margin-right: 10px;
-}
-
-
-
         .modern-table tr {
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
@@ -360,7 +324,7 @@
             
             <div class="slide">
                 <div class="slide-content">
-                    <h2>Su di me</h2>
+                    <h2>Il Tuo Tutor</h2>
                     <p><b>PRIMA LEZIONE GRATUITA</b><br> </p>
                     <small style="font-size:1rem; font-weight:400; opacity:0.7">Piacere mi chiamo Andrea, frequento la facoltà di ingegneria aerospaziale al PoliMi. <br>
                         Sono <b>Automunito</b> e do Ripetizioni da scuole secondarie di primo grado (medie) in poi.<br>
@@ -371,36 +335,23 @@
             <div class="slide">
                 <div class="slide-content">
                     <h2>Il Metodo</h2>
-                                <div class="slide">
-                <div class="slide-content">
-                    <h2>Il Metodo</h2>
-                    
                     <div class="slide-table-container">
                         <table class="modern-table">
                             <tr>
-                                <td class="text-center">
-                                    <small style="font-size:1rem; font-weight:400; opacity:0.9; line-height: 1.6; display: block;">
-                                        Le ripetizioni non dovrebbero servire solo per preparare una verifica o un’interrogazione, 
-                                        ma piuttosto ad aiutare a sviluppare metodi di studio utili soprattutto fuori dalla scuola.
-                                    </small>
-                                </td>
-                            </tr>
-                            
+            <div style="text-align:center; width:100%; display:flex; justify-content:center;">
+                                <td class="price"><small style="font-size:0.9rem; font-weight:400; opacity:0.7"> Le ripetizioni non dovrebbero servire solo per<br>preparare una verifica o un’interrogazione,<br>ma piuttosto ad aiutare a sviluppare metodi di studio<br>utili soprattutto fuori dalla scuola. </small></td>
+                         </div>   </tr> 
                             <tr>
-                                <td class="text-left">
-                                    <ul>
-                                        <li>Piani Personalizzati</li>
-                                        <li>Schede di esercizio personalizzate</li>
-                                        <li>Videolezioni con lavagna 120x90 cm</li>
-                                    </ul>
+                                <td>
+                                 <p>   <ul>
+                        <li>Piani Personalizzati</li>
+                        <li>Schede di esercizio personalizzate</li>
+                        <li>Videolezioni con lavagna 120x90 cm</li>
+                    </ul> </p>
                                 </td>
                             </tr>
                         </table>
                     </div>
-
-                </div>
-            </div>
-
 
                 </div>
             </div>
@@ -531,4 +482,3 @@
 
 </body>
 </html>
-
