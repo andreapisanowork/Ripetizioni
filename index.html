@@ -161,15 +161,40 @@
             color: var(--white);
         }
 
-        /* --- CLASSE SPECIALE PER CENTRARE I TESTI --- */
-.tabella-centrata td {
-    text-align: center !important; /* Forza il testo al centro */
-}
+/* --- CSS PER TABELLA MISTA (Testo centrato + Elenco a sinistra) --- */
 
-/* Opzionale: se vuoi che anche la colonna dei prezzi sia centrata */
-.tabella-centrata td.price {
+/* Classe per centrare solo celle specifiche */
+.text-center {
     text-align: center !important;
 }
+
+/* Classe per allineare a sinistra solo celle specifiche */
+.text-left {
+    text-align: left !important;
+}
+
+/* Stile per l'elenco puntato QUANDO è dentro una tabella */
+.modern-table ul {
+    list-style: none; /* Rimuove i pallini standard */
+    padding-left: 10px;
+    margin: 0;
+}
+
+.modern-table ul li {
+    margin-bottom: 10px;
+    font-family: var(--font-elegant); /* Mantiene il font elegante della tabella */
+    font-style: italic;
+    font-size: 1.1rem;
+}
+
+.modern-table ul li::before {
+    content: "• ";
+    color: #4CAF50; /* Il pallino verde */
+    font-size: 1.5rem;
+    vertical-align: sub;
+    margin-right: 10px;
+}
+
 
 
         .modern-table tr {
