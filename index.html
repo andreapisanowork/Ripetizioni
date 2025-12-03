@@ -57,15 +57,15 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.2);
             z-index: 1001;
             overflow: hidden;
-            padding: 5px; /* Un po' di padding per il logo */
+            padding: 2px; /* Piccolo spazio interno */
         }
 
-        /* Stile e Ricolorazione Logo */
+        /* Stile Logo Semplice */
         .logo-img {
             width: 100%;
-            height: auto;
-            /* Filtro CSS per ricolorare l'immagine nera in verde scuro (#00563F) */
-            filter: brightness(0) saturate(100%) invert(24%) sepia(98%) saturate(2424%) hue-rotate(126deg) brightness(93%) contrast(103%);
+            height: 100%;
+            object-fit: cover; /* O 'contain' se non vuoi tagliarlo */
+            border-radius: 50%;
         }
 
         /* --- 2. CAROUSEL SWIPE INFINITO --- */
@@ -110,12 +110,12 @@
             content: '';
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 50, 30, 0.7); /* Overlay più scuro per le tariffe */
+            background: rgba(0, 50, 30, 0.7); /* Overlay scuro per leggiiblità */
             z-index: 1;
         }
 
-        /* Immagini Sfondo */
-        .slide:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1920&q=80'); }
+        /* Immagini Sfondo - Slide 1 Lavagna ripristinata */
+        .slide:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1517999349907-6c7669267629?auto=format&fit=crop&w=1920&q=80'); background-position: top center; }
         .slide:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1580894732444-8efbae487984?auto=format&fit=crop&w=1920&q=80'); }
         .slide:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1920&q=80'); }
 
@@ -124,7 +124,7 @@
             z-index: 2;
             color: var(--white);
             padding: 20px;
-            max-width: 800px; /* Aumentato per la tabella */
+            max-width: 800px; 
             width: 100%;
         }
 
@@ -245,7 +245,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             transition: transform 0.2s;
             border-left: 4px solid var(--primary-color);
-            cursor: default; /* Indica che non è un link esterno */
+            cursor: default;
         }
 
         .resource-card:active { transform: scale(0.98); }
@@ -266,7 +266,7 @@
             text-align: center;
             background-color: #fff;
             padding-bottom: 40px;
-            margin-top: 0; /* Rimosso margine superiore */
+            margin-top: 0;
         }
 
         .social-icons {
@@ -313,7 +313,7 @@
 
     <header>
         <div class="logo-container">
-            <img src="image_0.png" alt="AD Ripetizioni Logo" class="logo-img">
+            <img src="logo.jpeg" alt="Logo Tutor" class="logo-img">
         </div>
     </header>
 
@@ -441,7 +441,7 @@
             track.appendChild(firstClone);
             track.insertBefore(lastClone, slides[0]);
 
-            // Posiziona inizialmente sulla prima slide "reale" (che ora è la seconda)
+            // Posiziona inizialmente sulla prima slide "reale"
             track.scrollLeft = slideWidth;
 
             let isScrolling = false;
@@ -455,23 +455,21 @@
                     const scrollLeft = track.scrollLeft;
                     const trackWidth = track.scrollWidth;
                     
-                    // Se siamo arrivati al clone dell'ultima slide (fine)
-                    if (scrollLeft + slideWidth >= trackWidth - 10) { // Tolleranza
-                        track.classList.add('no-smooth'); // Disabilita scroll fluido
-                        track.scrollLeft = slideWidth; // Salta alla prima slide reale
-                        setTimeout(() => { track.classList.remove('no-smooth'); }, 50);
-                    } 
-                    // Se siamo arrivati al clone della prima slide (inizio)
-                    else if (scrollLeft <= 10) { // Tolleranza
+                    if (scrollLeft + slideWidth >= trackWidth - 10) { // Fine
                         track.classList.add('no-smooth');
-                        track.scrollLeft = trackWidth - (slideWidth * 2); // Salta all'ultima slide reale
+                        track.scrollLeft = slideWidth;
+                        setTimeout(() => { track.classList.remove('no-smooth'); }, 50);
+                    } else if (scrollLeft <= 10) { // Inizio
+                        track.classList.add('no-smooth');
+                        track.scrollLeft = trackWidth - (slideWidth * 2);
                         setTimeout(() => { track.classList.remove('no-smooth'); }, 50);
                     }
                     isScrolling = false;
-                }, 200); // Attendi la fine dello scroll
+                }, 200);
             });
         });
     </script>
 
 </body>
 </html>
+
