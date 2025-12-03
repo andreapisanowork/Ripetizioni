@@ -443,16 +443,7 @@
             const slideWidth = slides[0].getBoundingClientRect().width;
 
             // Clona la prima e l'ultima slide per l'effetto infinito
-            const firstClone = slides[0].cloneNode(true);
-            const lastClone = slides[slides.length - 1].cloneNode(true);
-
-            track.appendChild(firstClone);
-            track.insertBefore(lastClone, slides[0]);
-
-            // Posiziona inizialmente sulla prima slide "reale"
-            track.scrollLeft = slideWidth;
-
-            let isScrolling = false;
+            
 
             track.addEventListener('scroll', () => {
                 if (isScrolling) return;
