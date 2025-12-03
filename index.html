@@ -3,176 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Il Tuo Tutor Scientifico - Ripetizioni Private</title>
+    <title>Tutor Scientifico</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <style>
         /* --- VARIABILI & RESET --- */
         :root {
-            --primary-color: #00563F; /* Verde Scuro richiesto */
-            --accent-color: #007a5a;
+            --primary-color: #00563F; /* Verde Scuro */
             --text-color: #333;
             --white: #ffffff;
-            --bg-light: #f4f7f6;
-            --font-main: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            --bg-light: #f9f9f9;
+            --font-main: 'Roboto', sans-serif;
+            --font-elegant: 'Playfair Display', serif; /* Per il corsivo bello */
+            --header-height: 50px;
+            --logo-size: 90px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: var(--font-main);
             color: var(--text-color);
             background-color: var(--bg-light);
-            line-height: 1.6;
-            padding-top: 60px; /* Spazio per l'header fisso */
+            padding-top: var(--header-height);
+            overflow-x: hidden; /* Evita scroll orizzontale pagina intera */
         }
 
-        /* --- 1. HEADER FISSO --- */
+        /* --- 1. HEADER & LOGO --- */
         header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 60px;
+            height: var(--header-height);
             background-color: var(--primary-color);
-            color: var(--white);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+        }
+
+        /* Il contenitore del logo */
+        .logo-container {
+            position: absolute;
+            top: 0; /* Parte dall'alto */
+            width: var(--logo-size);
+            height: var(--logo-size);
+            background-color: var(--white);
+            border-radius: 50%;
+            border: 3px solid var(--primary-color);
             display: flex;
             align-items: center;
-            padding: 0 20px;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            z-index: 1001;
+            overflow: hidden;
         }
 
-        .logo {
-            font-size: 1.2rem;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        /* Placeholder immagine logo */
+        .logo-img {
+            width: 80%;
+            height: auto;
+            opacity: 0.8; 
         }
 
-        /* --- 2. SEZIONE PRINCIPALE (CAROSELLO) --- */
+        /* --- 2. CAROUSEL SWIPE (CSS SNAP) --- */
         .hero-carousel {
             position: relative;
             width: 100%;
-            height: 75vh; /* Requisito 75% altezza schermo */
+            height: 75vh;
             overflow: hidden;
-            background-color: #000;
-        }
-
-        .carousel-track-container {
-            height: 100%;
-            width: 100%;
         }
 
         .carousel-track {
             display: flex;
+            width: 100%;
             height: 100%;
-            transition: transform 0.5s ease-in-out;
-            list-style: none;
+            overflow-x: auto; /* Abilita scroll orizzontale */
+            scroll-snap-type: x mandatory; /* Obbliga lo stop sulla slide */
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch; /* Fluidità su iOS */
+            scrollbar-width: none; /* Nasconde scrollbar Firefox */
+        }
+
+        .carousel-track::-webkit-scrollbar {
+            display: none; /* Nasconde scrollbar Chrome/Safari */
         }
 
         .slide {
-            min-width: 100%;
+            flex: 0 0 100%;
+            width: 100%;
             height: 100%;
+            scroll-snap-align: center; /* Si ferma al centro */
             position: relative;
-            /* Overlay scuro per leggibilità testo su immagini */
-            background-blend-mode: overlay;
-            background-color: rgba(0, 0, 0, 0.5); 
             background-size: cover;
             background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 20px;
         }
 
-        /* Placeholder Sfondi - SOSTITUIRE URL */
-        .slide:nth-child(1) { background-image: url('https://via.placeholder.com/1920x1080/00563F/FFFFFF?text=Slide+1+Science'); }
-        .slide:nth-child(2) { background-image: url('https://via.placeholder.com/1920x1080/333333/FFFFFF?text=Slide+2+Teaching'); }
-        .slide:nth-child(3) { background-image: url('https://via.placeholder.com/1920x1080/444444/FFFFFF?text=Slide+3+Prices'); }
+        /* Overlay scuro integrato */
+        .slide::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 50, 30, 0.6); /* Tinta verde scuro trasparente */
+            z-index: 1;
+        }
+
+        /* Immagini Placeholder */
+        .slide:nth-child(1) { background-image: url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=1920&q=80'); } /* Science Math */
+        .slide:nth-child(2) { background-image: url('https://images.unsplash.com/photo-1580894732444-8efbae487984?auto=format&fit=crop&w=1920&q=80'); } /* Study */
+        .slide:nth-child(3) { background-image: url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&fit=crop&w=1920&q=80'); } /* Calculation */
 
         .slide-content {
-            color: var(--white);
-            max-width: 800px;
+            position: relative;
             z-index: 2;
+            color: var(--white);
+            padding: 20px;
+            max-width: 600px;
         }
 
-        .slide-content h1 {
-            font-size: 2rem;
+        .slide-content h2 {
+            font-size: 2.2rem;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            font-family: var(--font-elegant);
+            font-style: italic;
         }
 
-        .slide-content ul {
-            text-align: left;
-            display: inline-block;
-            list-style: none;
-        }
-
-        .slide-content ul li {
-            margin-bottom: 10px;
+        .slide-content p, .slide-content li {
             font-size: 1.1rem;
-        }
-        
-        .slide-content ul li::before {
-            content: "✓";
-            color: #4CAF50;
-            margin-right: 10px;
-            font-weight: bold;
+            line-height: 1.5;
         }
 
-        /* Stile Prezzi nella Slide 3 */
-        .price-container {
-            display: flex;
-            flex-direction: column; /* Mobile first */
-            gap: 15px;
-            margin-top: 20px;
-        }
+        .slide-content ul { list-style: none; text-align: left; display: inline-block; }
+        .slide-content ul li { margin: 8px 0; }
+        .slide-content ul li::before { content: "• "; color: #4CAF50; font-size: 1.5rem; vertical-align: middle; }
 
-        .price-card {
-            background: rgba(255, 255, 255, 0.9);
-            color: #333;
-            padding: 15px;
-            border-radius: 8px;
-            flex: 1;
-        }
-        
-        .price-card strong {
-            display: block;
-            font-size: 1.2rem;
-            color: var(--primary-color);
-        }
-
-        /* Frecce Carosello */
-        .carousel-btn {
+        /* Indicatore Oscillante (Swipe Hint) */
+        .swipe-hint {
             position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.3);
-            border: none;
-            color: white;
-            padding: 15px;
-            cursor: pointer;
-            z-index: 10;
-            font-size: 1.5rem;
-            border-radius: 50%;
-            transition: background 0.3s;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.7);
+            z-index: 5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            pointer-events: none; /* Non cliccabile */
+        }
+        
+        .hand-icon {
+            font-size: 2rem;
+            animation: oscillate 2s infinite ease-in-out;
+        }
+        
+        .hint-text { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
+
+        @keyframes oscillate {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(20px); } /* Muove a destra e sinistra */
         }
 
-        .carousel-btn:hover {
-            background: rgba(255, 255, 255, 0.6);
-        }
-
-        .carousel-btn.prev { left: 15px; }
-        .carousel-btn.next { right: 15px; }
-
-        /* --- 3. SEZIONE APPUNTI (DRIVE) --- */
+        /* --- 3. SEZIONE TARIFFARIO (MODERNO) --- */
         .section-container {
-            padding: 40px 20px;
-            max-width: 1200px;
+            padding: 50px 20px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
@@ -180,255 +179,251 @@
             text-align: center;
             color: var(--primary-color);
             margin-bottom: 30px;
-            font-size: 1.8rem;
+            font-family: var(--font-elegant);
+            font-size: 2rem;
+            font-style: italic;
         }
 
+        .modern-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .modern-table tr {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1); /* Linea sottile */
+        }
+
+        .modern-table tr:last-child {
+            border-bottom: none;
+        }
+
+        .modern-table td {
+            padding: 20px 10px;
+            font-family: var(--font-elegant);
+            font-style: italic;
+            font-size: 1.3rem;
+            color: #444;
+        }
+
+        .modern-table td.price {
+            text-align: right;
+            font-weight: 700;
+            color: var(--primary-color);
+            white-space: nowrap;
+        }
+
+        .modern-table .details {
+            display: block;
+            font-family: var(--font-main);
+            font-style: normal;
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* --- 4. SEZIONE APPUNTI (DRIVE) --- */
         .resources-grid {
             display: grid;
-            grid-template-columns: 1fr; /* Mobile: 1 colonna */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
         }
 
         .resource-card {
             background: var(--white);
-            border: 1px solid #ddd;
-            border-radius: 8px;
             padding: 20px;
+            border-radius: 12px;
             text-decoration: none;
             color: inherit;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            transition: transform 0.2s, box-shadow 0.2s;
-            border-left: 5px solid var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+            border-left: 4px solid var(--primary-color);
         }
 
-        .resource-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .resource-info h3 {
-            font-size: 1.1rem;
-            margin-bottom: 5px;
-        }
-
-        .resource-info p {
-            font-size: 0.9rem;
-            color: #666;
-        }
+        .resource-card:active { transform: scale(0.98); }
 
         .download-icon {
-            font-size: 1.5rem;
+            background: #eef5f3;
             color: var(--primary-color);
-        }
-
-        /* --- 4. CONTATTI & FOOTER --- */
-        .contact-section {
-            background-color: #e9ecef;
-        }
-
-        .contact-form {
+            width: 40px; height: 40px;
+            border-radius: 50%;
             display: flex;
-            flex-direction: column;
-            gap: 15px;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        /* --- 5. CONTATTI & FOOTER --- */
+        .footer-contacts {
+            text-align: center;
+            background-color: #fff;
+            padding-bottom: 40px;
+        }
+
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-btn svg {
+            width: 32px;
+            height: 32px;
+            fill: var(--primary-color);
+        }
+
+        .social-btn:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,86,63,0.3);
+        }
+        
+        .social-btn:hover svg { fill: white; }
+
+        .legal-text {
+            font-size: 0.75rem;
+            color: #999;
+            padding: 0 20px;
+            line-height: 1.4;
             max-width: 600px;
             margin: 0 auto;
         }
 
-        .contact-form input, 
-        .contact-form textarea {
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            font-family: inherit;
-        }
-
-        .btn-submit {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 12px;
-            font-size: 1rem;
-            cursor: pointer;
-            border-radius: 4px;
-            font-weight: bold;
-        }
-
-        .btn-submit:hover {
-            background-color: var(--accent-color);
-        }
-
-        footer {
-            background-color: #222;
-            color: #aaa;
-            text-align: center;
-            padding: 20px;
-            font-size: 0.8rem;
-            margin-top: 40px;
-        }
-
-        /* --- RESPONSIVE DESKTOP --- */
-        @media (min-width: 768px) {
-            .price-container {
-                flex-direction: row; /* Desktop: Prezzi affiancati */
-            }
-            
-            .resources-grid {
-                grid-template-columns: repeat(3, 1fr); /* Desktop: 3 colonne risorse */
-            }
-
-            .slide-content h1 {
-                font-size: 3rem;
-            }
-        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">Tutor Scientifico</div>
+        <div class="logo-container">
+            <svg class="logo-img" viewBox="0 0 24 24" fill="none" stroke="#00563F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+            </svg>
+        </div>
     </header>
 
     <section class="hero-carousel">
-        <button class="carousel-btn prev" id="prevBtn">&#10094;</button>
-        <button class="carousel-btn next" id="nextBtn">&#10095;</button>
-        
-        <div class="carousel-track-container">
-            <ul class="carousel-track">
-                
-                <li class="slide current-slide">
-                    <div class="slide-content">
-                        <h1>Il Tuo Tutor: Tutoraggio per Tutte le Materie</h1>
-                        <p>Benvenuto! Offro supporto specializzato in Matematica, Fisica e Chimica, con un approccio chiaro ed efficace per studenti di ogni livello.</p>
-                    </div>
-                </li>
+        <div class="carousel-track">
+            
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>Il Tuo Tutor</h2>
+                    <p>Ripetizioni di Matematica, Fisica e Scienze per ogni livello. Un approccio chiaro per risultati concreti.</p>
+                </div>
+            </div>
 
-                <li class="slide">
-                    <div class="slide-content">
-                        <h1>Il Mio Metodo: Flessibilità e Obiettivi</h1>
-                        <ul>
-                            <li>Focus Scientifico Approfondito e Pratico</li>
-                            <li>Piani di Studio 100% Personalizzati</li>
-                            <li>Supporto costante anche via chat</li>
-                            <li>Preparazione specifica per test ed esami</li>
-                        </ul>
-                    </div>
-                </li>
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>Il Metodo</h2>
+                    <ul>
+                        <li>Piani Personalizzati</li>
+                        <li>Approccio Pratico</li>
+                        <li>Supporto WhatsApp</li>
+                    </ul>
+                </div>
+            </div>
 
-                <li class="slide">
-                    <div class="slide-content">
-                        <h1>Tariffe Trasparenti</h1>
-                        <div class="price-container">
-                            <div class="price-card">
-                                <strong>Singola Lezione</strong>
-                                25€ / ora<br>
-                                <small>Ideale per dubbi specifici</small>
-                            </div>
-                            <div class="price-card">
-                                <strong>Pacchetto "Scienze"</strong>
-                                110€ / 5 ore<br>
-                                <small>Percorso di recupero</small>
-                            </div>
-                            <div class="price-card">
-                                <strong>Pacchetto "Esame"</strong>
-                                200€ / 10 ore<br>
-                                <small>Preparazione intensiva</small>
-                            </div>
-                        </div>
-                    </div>
-                </li>
+            <div class="slide">
+                <div class="slide-content">
+                    <h2>Investi nel Futuro</h2>
+                    <p>Tariffe chiare e pacchetti flessibili costruiti sulle tue esigenze.</p>
+                </div>
+            </div>
 
-            </ul>
+        </div>
+
+        <div class="swipe-hint">
+            <div class="hand-icon">↔</div> <div class="hint-text">Scorri</div>
         </div>
     </section>
 
     <section class="section-container">
-        <h2 class="section-title">Le Mie Risorse: Appunti di Studio</h2>
+        <h2 class="section-title">Tariffe</h2>
+        <table class="modern-table">
+            <tr>
+                <td>
+                    Lezione Singola
+                    <span class="details">Per dubbi specifici o ripasso</span>
+                </td>
+                <td class="price">25€<br><small style="font-size:0.7rem; font-weight:400; color:#999">/ora</small></td>
+            </tr>
+            <tr>
+                <td>
+                    Pacchetto Scienze
+                    <span class="details">5 ore di lezione (Mat/Fis)</span>
+                </td>
+                <td class="price">110€</td>
+            </tr>
+            <tr>
+                <td>
+                    Full Immersion
+                    <span class="details">10 ore preparazione esami</span>
+                </td>
+                <td class="price">200€</td>
+            </tr>
+        </table>
+    </section>
+
+    <section class="section-container" style="background-color: #f4f7f6;">
+        <h2 class="section-title">Risorse</h2>
         <div class="resources-grid">
-            
-            <a href="https://drive.google.com/tuo-link-1" target="_blank" class="resource-card">
-                <div class="resource-info">
-                    <h3>Formulario Fisica</h3>
-                    <p>Cinematica e Dinamica</p>
+            <a href="#" class="resource-card">
+                <div>
+                    <strong>Fisica: Formulario</strong><br>
+                    <small style="color:#666">Meccanica e Dinamica</small>
                 </div>
-                <div class="download-icon">&#128193;</div> </a>
-
-            <a href="https://drive.google.com/tuo-link-2" target="_blank" class="resource-card">
-                <div class="resource-info">
-                    <h3>Schemi Analisi 1</h3>
-                    <p>Limiti, Derivate e Integrali</p>
-                </div>
-                <div class="download-icon">&#128193;</div>
+                <div class="download-icon">⬇</div>
             </a>
-
-            <a href="https://drive.google.com/tuo-link-3" target="_blank" class="resource-card">
-                <div class="resource-info">
-                    <h3>Chimica Organica</h3>
-                    <p>Nomenclatura e Reazioni base</p>
+            <a href="#" class="resource-card">
+                <div>
+                    <strong>Matematica: Analisi</strong><br>
+                    <small style="color:#666">Limiti e Derivate</small>
                 </div>
-                <div class="download-icon">&#128193;</div>
+                <div class="download-icon">⬇</div>
             </a>
-
         </div>
     </section>
 
-    <section class="section-container contact-section">
+    <section class="section-container footer-contacts">
         <h2 class="section-title">Contattami</h2>
-        <form class="contact-form">
-            <input type="text" placeholder="Il tuo Nome" required>
-            <input type="email" placeholder="La tua Email" required>
-            <input type="text" placeholder="Materia di interesse">
-            <textarea rows="4" placeholder="Messaggio o richiesta particolare"></textarea>
-            <button type="submit" class="btn-submit">Invia Richiesta</button>
-        </form>
+        <p style="color: #666;">Clicca sulle icone per scrivermi direttamente</p>
+        
+        <div class="social-icons">
+            <a href="https://wa.me/391234567890" target="_blank" class="social-btn" aria-label="WhatsApp">
+                <svg viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                </svg>
+            </a>
+
+            <a href="https://instagram.com/tuo_profilo" target="_blank" class="social-btn" aria-label="Instagram">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+            </a>
+        </div>
+
+        <div class="legal-text">
+            Nota Legale: Servizio di ripetizioni private svolto in regime di prestazione occasionale (art. 2222 c.c.). 
+            Operazione fuori campo IVA ex art. 5 DPR 633/72.
+        </div>
     </section>
 
-    <footer>
-        <p>&copy; 2023 Tutor Scientifico. Tutti i diritti riservati.</p>
-        <br>
-        <p style="font-size: 0.7rem; opacity: 0.7;">
-            NOTA LEGALE: Prestazione occasionale svolta ai sensi dell'art. 2222 c.c. 
-            Operazione fuori campo IVA ai sensi dell'art. 5 del D.P.R. 633/1972.
-            Servizio esente da obbligo di fatturazione elettronica.
-        </p>
-    </footer>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const track = document.querySelector('.carousel-track');
-            const slides = Array.from(track.children);
-            const nextButton = document.querySelector('#nextBtn');
-            const prevButton = document.querySelector('#prevBtn');
-
-            let currentSlideIndex = 0;
-
-            const updateSlidePosition = () => {
-                const width = slides[0].getBoundingClientRect().width;
-                track.style.transform = 'translateX(-' + (width * currentSlideIndex) + 'px)';
-            };
-
-            // Gestione ridimensionamento finestra
-            window.addEventListener('resize', updateSlidePosition);
-
-            nextButton.addEventListener('click', () => {
-                if (currentSlideIndex === slides.length - 1) {
-                    currentSlideIndex = 0; // Torna all'inizio
-                } else {
-                    currentSlideIndex++;
-                }
-                updateSlidePosition();
-            });
-
-            prevButton.addEventListener('click', () => {
-                if (currentSlideIndex === 0) {
-                    currentSlideIndex = slides.length - 1; // Vai alla fine
-                } else {
-                    currentSlideIndex--;
-                }
-                updateSlidePosition();
-            });
-        });
-    </script>
 </body>
 </html>
+
