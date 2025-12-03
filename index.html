@@ -161,6 +161,17 @@
             color: var(--white);
         }
 
+        /* --- CLASSE SPECIALE PER CENTRARE I TESTI --- */
+.tabella-centrata td {
+    text-align: center !important; /* Forza il testo al centro */
+}
+
+/* Opzionale: se vuoi che anche la colonna dei prezzi sia centrata */
+.tabella-centrata td.price {
+    text-align: center !important;
+}
+
+
         .modern-table tr {
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
@@ -336,9 +347,8 @@
                 <div class="slide-content">
                     <h2>Il Metodo</h2>
                     <div class="slide-table-container">
-                        <table class="modern-table">
+                        <table class="modern-table tabella-centrata">
                             <tr>
-            <div style="text-align:center; width:100%; display:flex; justify-content:center;">
                                 <td class="price"><small style="font-size:0.9rem; font-weight:400; opacity:0.7"> Le ripetizioni non dovrebbero servire solo per<br>preparare una verifica o un’interrogazione,<br>ma piuttosto ad aiutare a sviluppare metodi di studio<br>utili soprattutto fuori dalla scuola. </small></td>
                          </div>   </tr> 
                             <tr>
