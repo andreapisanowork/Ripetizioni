@@ -64,19 +64,18 @@
       background-color: var(--green-dark);
     }
 
-<!-- Logo circolare cliccabile -->
-<header class="top-header">
-  <a
-    href="https://instagram.com/pisanoo.andrea"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="logo-wrapper"
-    aria-label="Vai al profilo Instagram @pisanoo.andrea"
-  >
-    <img src="logo.png" alt="Andrea Pisano Ripetizioni">
-  </a>
-</header>
-
+    /* Logo circolare flottante in alto */
+    .top-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 16px 0;
+      display: flex;
+      justify-content: center;
+      z-index: 20;
+      pointer-events: none;
+    }
 
     .logo-wrapper {
       width: 82px;
@@ -95,16 +94,6 @@
     .logo-wrapper:hover {
       transform: scale(1.05);
     }
-
-    .logo-wrapper {
-  display: block;
-  cursor: pointer;
-}
-
-.logo-wrapper:active {
-  transform: scale(0.95);
-}
-
 
     .logo-wrapper img {
       width: 100%;
