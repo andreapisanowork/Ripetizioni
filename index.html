@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Andrea Pisano — Ripetizioni</title>
 
-  <!-- Font eleganti: Playfair Display (titoli) + Plus Jakarta Sans (testi) -->
+  <!-- Font: Playfair Display (titoli) + Plus Jakarta Sans (testi) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -39,20 +39,17 @@
       overflow-x: hidden;
     }
 
-    /* =========================================================
-       SFONDI DELLE SLIDE (Sostituisci i percorsi con le tue foto)
-       I colori di fallback restano attivi finché non carichi le immagini.
-       ========================================================= */
+    /* ================= SFONDI DELLE SLIDE ================= */
     .slide-1 {
-      background-image: url('img/sfondo-1.jpg');
+      background-image: url('slide1.jpeg');
       background-color: #0b4630;
     }
     .slide-2 {
-      background-image: url('img/sfondo-2.jpg');
+      background-image: url('slide2.jpeg');
       background-color: #0e3d35;
     }
     .slide-3 {
-      background-image: url('img/sfondo-3.jpg');
+      background-image: url('slide3.jpeg');
       background-color: #093326;
     }
 
@@ -61,7 +58,7 @@
       position: relative;
       width: 100%;
       height: 100vh;
-      height: 100dvh; /* Perfetto su mobile con barra indirizzi dinamica */
+      height: 100dvh;
       min-height: 620px;
       overflow: hidden;
       background-color: var(--green-dark);
@@ -114,11 +111,11 @@
       overflow-x: auto;
       scroll-snap-type: x mandatory;
       scroll-behavior: smooth;
-      scrollbar-width: none; /* Firefox */
+      scrollbar-width: none;
     }
 
     .carousel-track::-webkit-scrollbar {
-      display: none; /* Chrome / Safari */
+      display: none;
     }
 
     /* Singola facciata */
@@ -134,10 +131,10 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 120px 24px 135px;
+      padding: 120px 24px 145px;
     }
 
-    /* Overlay scuro sfumato per rendere sempre nitido il testo */
+    /* Overlay scuro sfumato per mantenere sempre nitido il testo */
     .slide::before {
       content: "";
       position: absolute;
@@ -207,7 +204,7 @@
       font-weight: 700;
     }
 
-    /* Pillole per evidenziare materie o punti chiave */
+    /* Pillole materie */
     .pills {
       display: flex;
       flex-wrap: wrap;
@@ -228,7 +225,7 @@
       color: #ffffff;
     }
 
-    /* Frecce laterali (visibili su schermi medi/grandi) */
+    /* Frecce laterali (desktop) */
     .nav-arrow {
       position: absolute;
       top: 50%;
@@ -262,25 +259,17 @@
       .logo-wrapper { width: 92px; height: 92px; }
     }
 
-    /* Controlli inferiori: pallini + pulsante freccia verso il basso */
-    .hero-bottom {
+    /* Pallini di stato sopra la freccia */
+    .dots {
       position: absolute;
-      bottom: 24px;
+      bottom: 92px;
       left: 0;
       width: 100%;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 18px;
-      z-index: 20;
-      pointer-events: none;
-    }
-
-    .dots {
-      display: flex;
+      justify-content: center;
       align-items: center;
       gap: 8px;
-      pointer-events: auto;
+      z-index: 20;
     }
 
     .dot {
@@ -299,8 +288,14 @@
       background: #ffffff;
     }
 
-    .scroll-down-btn {
-      pointer-events: auto;
+    /* ================= PULSANTE FRECCIA FISSO (GIÙ / SU) ================= */
+    .scroll-toggle-btn {
+      position: fixed;
+      bottom: 24px;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+      z-index: 30;
       width: 48px;
       height: 48px;
       border-radius: 50%;
@@ -312,31 +307,54 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      text-decoration: none;
       cursor: pointer;
       box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
-      transition: background 0.3s ease, transform 0.3s var(--ease-smooth);
+      transition:
+        background 0.4s ease,
+        border-color 0.4s ease,
+        box-shadow 0.4s ease,
+        color 0.4s ease;
       animation: floatArrow 2.4s ease-in-out infinite;
     }
 
-    .scroll-down-btn:hover {
+    .scroll-toggle-btn:hover {
       background: rgba(255, 255, 255, 0.26);
-      transform: translateY(2px);
+    }
+
+    .scroll-toggle-btn svg {
+      transition: transform 0.5s var(--ease-smooth);
+    }
+
+    /* Stato "su" quando sei nella sezione contatti */
+    .scroll-toggle-btn.is-up {
+      background: var(--green-dark);
+      border-color: rgba(7, 59, 39, 0.25);
+      color: #ffffff;
+      box-shadow: 0 10px 26px rgba(7, 59, 39, 0.26);
+    }
+
+    .scroll-toggle-btn.is-up:hover {
+      background: var(--green-main);
+    }
+
+    .scroll-toggle-btn.is-up svg {
+      transform: rotate(180deg);
     }
 
     @keyframes floatArrow {
       0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(6px); }
+      50% { transform: translateY(5px); }
     }
 
     /* ================= SEZIONE CONTATTI ================= */
     .contacts-section {
-      min-height: 75vh;
+      min-height: 92vh;
+      min-height: 92dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 72px 24px 48px;
+      padding: 72px 24px 110px;
       background: var(--bg-light);
     }
 
@@ -467,7 +485,7 @@
     }
 
     footer {
-      margin-top: 56px;
+      margin-top: 52px;
       font-size: 0.8rem;
       color: #83948c;
       text-align: center;
@@ -477,13 +495,12 @@
 <body>
 
   <!-- ================= SEZIONE HERO CAROSELLO ================= -->
-  <section class="hero" aria-label="Informazioni principali">
+  <section class="hero" id="top" aria-label="Informazioni principali">
 
     <!-- Logo circolare -->
     <header class="top-header">
       <div class="logo-wrapper">
-        <!-- Inserisci qui il percorso del tuo logo circolare -->
-        <img src="img/logo.png" alt="Andrea Pisano Ripetizioni">
+        <img src="logo.png" alt="Andrea Pisano Ripetizioni">
       </div>
     </header>
 
@@ -524,7 +541,7 @@
         </div>
       </article>
 
-      <!-- FACCIATA 2 (Personalizzabile) -->
+      <!-- FACCIATA 2 -->
       <article class="slide slide-2">
         <div class="slide-content">
           <span class="slide-tag">Approccio</span>
@@ -537,7 +554,7 @@
         </div>
       </article>
 
-      <!-- FACCIATA 3 (Personalizzabile) -->
+      <!-- FACCIATA 3 -->
       <article class="slide slide-3">
         <div class="slide-content">
           <span class="slide-tag">Organizzazione</span>
@@ -551,18 +568,17 @@
 
     </div>
 
-    <!-- Pallini di stato + Pulsante freccia giù -->
-    <div class="hero-bottom">
-      <div class="dots" id="carouselDots" role="tablist" aria-label="Seleziona slide"></div>
-
-      <a href="#contatti" class="scroll-down-btn" id="scrollDownBtn" aria-label="Vai ai contatti">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-      </a>
-    </div>
+    <!-- Pallini di stato -->
+    <div class="dots" id="carouselDots" role="tablist" aria-label="Seleziona slide"></div>
 
   </section>
+
+  <!-- Pulsante freccia fisso che ruota verso l'alto quando scendi -->
+  <button type="button" class="scroll-toggle-btn" id="scrollToggleBtn" aria-label="Vai ai contatti">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </button>
 
   <!-- ================= SEZIONE CONTATTI ================= -->
   <section class="contacts-section" id="contatti">
@@ -575,9 +591,9 @@
 
       <div class="contact-buttons">
 
-        <!-- WhatsApp (sostituisci 39XXXXXXXXXX con il tuo numero) -->
+        <!-- WhatsApp -->
         <a
-          href="https://wa.me/39XXXXXXXXXX?text=Ciao%20Andrea%2C%20vorrei%20informazioni%20per%20delle%20ripetizioni"
+          href="https://wa.me/393926519029?text=Ciao%20Andrea%2C%20vorrei%20informazioni%20per%20delle%20ripetizioni"
           target="_blank"
           rel="noopener noreferrer"
           class="contact-btn"
@@ -590,7 +606,7 @@
             </div>
             <div class="btn-meta">
               <span class="btn-name">WhatsApp</span>
-              <span class="btn-handle">Risposta rapida in chat</span>
+              <span class="btn-handle">+39 392 651 9029</span>
             </div>
           </div>
           <svg class="btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -599,9 +615,9 @@
           </svg>
         </a>
 
-        <!-- Instagram (sostituisci tuo_username con il tuo profilo) -->
+        <!-- Instagram -->
         <a
-          href="https://instagram.com/tuo_username"
+          href="https://instagram.com/ap.ripetizioni"
           target="_blank"
           rel="noopener noreferrer"
           class="contact-btn"
@@ -616,7 +632,7 @@
             </div>
             <div class="btn-meta">
               <span class="btn-name">Instagram</span>
-              <span class="btn-handle">@tuo_username</span>
+              <span class="btn-handle">@ap.ripetizioni</span>
             </div>
           </div>
           <svg class="btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -639,10 +655,14 @@
     const dotsContainer = document.getElementById('carouselDots');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    const heroSection = document.getElementById('top');
+    const contactsSection = document.getElementById('contatti');
+    const scrollToggleBtn = document.getElementById('scrollToggleBtn');
 
     let currentIndex = 0;
+    let isScrolledDown = false;
 
-    // Genera automaticamente un pallino per ogni slide presente nell'HTML
+    // Genera i pallini in base alle slide
     slides.forEach((_, index) => {
       const dot = document.createElement('button');
       dot.classList.add('dot');
@@ -670,7 +690,6 @@
       });
     }
 
-    // Aggiorna pallini e animazione testo durante lo swipe
     let scrollRaf;
     track.addEventListener('scroll', () => {
       cancelAnimationFrame(scrollRaf);
@@ -683,13 +702,38 @@
     prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
     nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
 
-    // Navigazione da tastiera su desktop
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight') goToSlide(currentIndex + 1);
       if (e.key === 'ArrowLeft') goToSlide(currentIndex - 1);
     });
 
-    // Animazione fade-up fluida per la sezione contatti
+    // Gestione rotazione freccia giù/su in base allo scroll verticale
+    function updateScrollButton() {
+      const threshold = heroSection.offsetHeight * 0.3;
+      const shouldPointUp = window.scrollY > threshold;
+
+      if (shouldPointUp !== isScrolledDown) {
+        isScrolledDown = shouldPointUp;
+        scrollToggleBtn.classList.toggle('is-up', isScrolledDown);
+        scrollToggleBtn.setAttribute(
+          'aria-label',
+          isScrolledDown ? 'Torna in cima' : 'Vai ai contatti'
+        );
+      }
+    }
+
+    window.addEventListener('scroll', updateScrollButton, { passive: true });
+    updateScrollButton();
+
+    scrollToggleBtn.addEventListener('click', () => {
+      if (isScrolledDown) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        contactsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    // Animazione fade-up per la card contatti
     const contactsCard = document.getElementById('contactsCard');
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
