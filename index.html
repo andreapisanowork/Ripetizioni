@@ -1,514 +1,707 @@
-
-
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tutor Scientifico</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
-    
-    <style>
-        /* --- VARIABILI & RESET --- */
-        :root {
-            --primary-color: #00563F; /* Verde Scuro */
-            --text-color: #333;
-            --white: #ffffff;
-            --bg-light: #f9f9f9;
-            --font-main: 'Roboto', sans-serif;
-            --font-elegant: 'Playfair Display', serif;
-            --header-height: 50px;
-            --logo-size: 90px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Andrea Pisano — Ripetizioni</title>
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  <!-- Font eleganti: Playfair Display (titoli) + Plus Jakarta Sans (testi) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-        body {
-            font-family: var(--font-main);
-            color: var(--text-color);
-            background-color: var(--bg-light);
-            padding-top: var(--header-height);
-            overflow-x: hidden;
-        }
+  <style>
+    :root {
+      --green-dark: #073b27;
+      --green-main: #0c593b;
+      --green-accent: #147a52;
+      --bg-light: #f6f8f7;
+      --text-dark: #14221c;
+      --text-muted: #52635b;
+      --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-        /* --- 1. HEADER & LOGO --- */
-        header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: var(--header-height);
-            background-color: var(--primary-color);
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            display: flex;
-            justify-content: center;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-        .logo-container {
-            position: absolute;
-            top: 0;
-            width: var(--logo-size);
-            height: var(--logo-size);
-            background-color: var(--white);
-            border-radius: 50%;
-            border: 3px solid var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            z-index: 1001;
-            overflow: hidden;
-            padding: 2px; /* Piccolo spazio interno */
-        }
+    html {
+      scroll-behavior: smooth;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+    }
 
-        /* Stile Logo Semplice */
-        .logo-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover; /* O 'contain' se non vuoi tagliarlo */
-            border-radius: 50%;
-        }
+    body {
+      overflow-x: hidden;
+    }
 
-        /* --- 2. CAROUSEL SWIPE INFINITO --- */
-        .hero-carousel {
-            position: relative;
-            width: 100%;
-            height: 75vh;
-            overflow: hidden;
-        }
+    /* =========================================================
+       SFONDI DELLE SLIDE (Sostituisci i percorsi con le tue foto)
+       I colori di fallback restano attivi finché non carichi le immagini.
+       ========================================================= */
+    .slide-1 {
+      background-image: url('img/sfondo-1.jpg');
+      background-color: #0b4630;
+    }
+    .slide-2 {
+      background-image: url('img/sfondo-2.jpg');
+      background-color: #0e3d35;
+    }
+    .slide-3 {
+      background-image: url('img/sfondo-3.jpg');
+      background-color: #093326;
+    }
 
-        .carousel-track {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
+    /* ================= HERO + CAROSELLO ================= */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      height: 100dvh; /* Perfetto su mobile con barra indirizzi dinamica */
+      min-height: 620px;
+      overflow: hidden;
+      background-color: var(--green-dark);
+    }
 
-        .carousel-track.no-smooth {
-            scroll-behavior: auto !important; /* Disabilita smooth scroll per il reset */
-        }
+    /* Logo circolare flottante in alto */
+    .top-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 16px 0;
+      display: flex;
+      justify-content: center;
+      z-index: 20;
+      pointer-events: none;
+    }
 
-        .carousel-track::-webkit-scrollbar { display: none; }
+    .logo-wrapper {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      background-color: #ffffff;
+      padding: 3px;
+      box-shadow:
+        0 0 0 6px rgba(255, 255, 255, 0.16),
+        0 12px 30px rgba(0, 0, 0, 0.28);
+      overflow: hidden;
+      pointer-events: auto;
+      transition: transform 0.4s var(--ease-smooth);
+    }
 
-        .slide {
-            flex: 0 0 100%;
-            width: 100%;
-            height: 100%;
-            scroll-snap-align: center;
-            position: relative;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
+    .logo-wrapper:hover {
+      transform: scale(1.05);
+    }
 
-        .slide::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 50, 30, 0.7); /* Overlay scuro per leggiiblità */
-            z-index: 1;
-        }
+    .logo-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      display: block;
+    }
 
-        /* Immagini Sfondo - Slide 1 Lavagna ripristinata */
-        .slide:nth-child(1) { background-image: url('slide1.jpeg'); background-position: top center; }
-        .slide:nth-child(2) { background-image: url('slide3.jpeg');  }
-        .slide:nth-child(3) { background-image: url('slide2.jpeg');  }
-        .slide:nth-child(4) { background-image: url('slide1.jpeg'); background-position: top center; }
-        .slide:nth-child(5) { background-image: url('slide3.jpeg');  }
-        .slide:nth-child(6) { background-image: url('slide2.jpeg');  }
+    /* Track scorrevole del carosello */
+    .carousel-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      scrollbar-width: none; /* Firefox */
+    }
 
-        .slide-content {
-            position: relative;
-            z-index: 2;
-            color: var(--white);
-            padding: 20px;
-            max-width: 800px; 
-            width: 100%;
-        }
+    .carousel-track::-webkit-scrollbar {
+      display: none; /* Chrome / Safari */
+    }
 
-        .slide-content h2 {
-            font-size: 2.2rem;
-            margin-bottom: 1rem;
-            font-family: var(--font-elegant);
-            font-style: italic;
-        }
+    /* Singola facciata */
+    .slide {
+      position: relative;
+      flex: 0 0 100%;
+      width: 100%;
+      height: 100%;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 135px;
+    }
 
-        .slide-content p, .slide-content li {
-            font-size: 1.1rem;
-            line-height: 1.5;
-        }
+    /* Overlay scuro sfumato per rendere sempre nitido il testo */
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(5, 36, 24, 0.78) 0%,
+        rgba(7, 46, 31, 0.68) 50%,
+        rgba(4, 28, 19, 0.88) 100%
+      );
+      z-index: 1;
+    }
 
-        .slide-content ul { list-style: none; text-align: left; display: inline-block; }
-        .slide-content ul li { margin: 8px 0; }
-        .slide-content ul li::before { content: "• "; color: #4CAF50; font-size: 1.5rem; vertical-align: middle; }
+    /* Contenuto della slide */
+    .slide-content {
+      position: relative;
+      z-index: 2;
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+      color: #ffffff;
+      opacity: 0.4;
+      transform: translateY(16px);
+      transition: opacity 0.6s var(--ease-smooth), transform 0.6s var(--ease-smooth);
+    }
 
-        /* Stile Tabella Tariffe nel Carosello */
-        .slide-table-container {
-            background: rgba(255, 255, 255, 0.1); /* Sfondo semitrasparente */
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 20px;
-            backdrop-filter: blur(5px);
-        }
+    .slide.is-active .slide-content {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        .modern-table {
-            width: 100%;
-            border-collapse: collapse;
-            color: var(--white);
-        }
+    .slide-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.85);
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 16px;
+    }
 
-        .modern-table tr {
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        }
+    .slide-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(2.15rem, 7vw, 3.2rem);
+      font-weight: 600;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
 
-        .modern-table tr:last-child { border-bottom: none; }
+    .slide-text {
+      font-size: clamp(0.98rem, 3.6vw, 1.08rem);
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.92);
+      font-weight: 400;
+    }
 
-        .modern-table td {
-            padding: 15px 10px;
-            font-family: var(--font-elegant);
-            font-style: italic;
-            font-size: 1.2rem;
-            text-align: left;
-        }
+    .slide-text strong {
+      color: #ffffff;
+      font-weight: 700;
+    }
 
-        .modern-table td.price {
-            text-align: right;
-            font-weight: 700;
-            color: #FFFFFF;
-            white-space: nowrap;
-        }
+    /* Pillole per evidenziare materie o punti chiave */
+    .pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin: 20px 0 18px;
+    }
 
-        .modern-table .details {
-            display: block;
-            font-family: var(--font-main);
-            font-style: normal;
-            font-size: 0.8rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-top: 5px;
-        }
-        
-        .swipe-hint {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: rgba(255,255,255,0.7);
-            z-index: 5;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            pointer-events: none;
-        }
-        
-        .hand-icon { font-size: 2rem; animation: oscillate 2s infinite ease-in-out; }
-        .hint-text { font-size: 1.1rem; font-weight:400; text-transform: uppercase; letter-spacing: 1px; margin-top: 5px; }
+    .pill {
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #ffffff;
+    }
 
-        @keyframes oscillate {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(20px); }
-        }
+    /* Frecce laterali (visibili su schermi medi/grandi) */
+    .nav-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 15;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #ffffff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+    }
 
-        /* --- 3. SEZIONI CONTENUTO --- */
-        .section-container {
-            padding: 50px 20px;
-            max-width: 800px;
-            margin: 0 auto;
-        }
+    .nav-arrow:hover {
+      background: rgba(255, 255, 255, 0.22);
+      transform: translateY(-50%) scale(1.06);
+    }
 
-        .section-title {
-            text-align: center;
-            color: var(--primary-color);
-            margin-bottom: 30px;
-            font-family: var(--font-elegant);
-            font-size: 2rem;
-            font-style: italic;
-        }
+    .nav-arrow.prev { left: 24px; }
+    .nav-arrow.next { right: 24px; }
 
-        /* --- 4. SEZIONE APPUNTI (Link Interni) --- */
-        .resources-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
+    @media (min-width: 768px) {
+      .nav-arrow { display: flex; }
+      .logo-wrapper { width: 92px; height: 92px; }
+    }
 
-        .resource-card {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
-            border-left: 4px solid var(--primary-color);
-            cursor: default;
-        }
+    /* Controlli inferiori: pallini + pulsante freccia verso il basso */
+    .hero-bottom {
+      position: absolute;
+      bottom: 24px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+      z-index: 20;
+      pointer-events: none;
+    }
 
-        .resource-card:active { transform: scale(0.98); }
+    .dots {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: auto;
+    }
 
-        .download-icon {
-            background: #eef5f3;
-            color: var(--primary-color);
-            width: 40px; height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      border: none;
+      background: rgba(255, 255, 255, 0.38);
+      cursor: pointer;
+      padding: 0;
+      transition: width 0.35s var(--ease-smooth), background 0.35s ease;
+    }
 
-        /* --- 5. CONTATTI & FOOTER --- */
-        .footer-contacts {
-            text-align: center;
-            background-color: #fff;
-            padding-bottom: 40px;
-            margin-top: 0;
-        }
+    .dot.active {
+      width: 26px;
+      background: #ffffff;
+    }
 
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 30px 0;
-        }
+    .scroll-down-btn {
+      pointer-events: auto;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.32);
+      background: rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+      transition: background 0.3s ease, transform 0.3s var(--ease-smooth);
+      animation: floatArrow 2.4s ease-in-out infinite;
+    }
 
-        .social-btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #f0f0f0;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
+    .scroll-down-btn:hover {
+      background: rgba(255, 255, 255, 0.26);
+      transform: translateY(2px);
+    }
 
-        .social-btn svg { width: 32px; height: 32px; fill: var(--primary-color); }
+    @keyframes floatArrow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(6px); }
+    }
 
-        .social-btn:hover {
-            background-color: var(--primary-color);
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,86,63,0.3);
-        }
-        
-        .social-btn:hover svg { fill: white; }
+    /* ================= SEZIONE CONTATTI ================= */
+    .contacts-section {
+      min-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 72px 24px 48px;
+      background: var(--bg-light);
+    }
 
-        .legal-text {
-            font-size: 0.75rem;
-            color: #999;
-            padding: 0 20px;
-            line-height: 1.4;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+    .contacts-card {
+      width: 100%;
+      max-width: 440px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.8s var(--ease-smooth), transform 0.8s var(--ease-smooth);
+    }
 
-    </style>
+    .contacts-card.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .contacts-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--green-accent);
+      margin-bottom: 10px;
+    }
+
+    .contacts-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(2rem, 6vw, 2.5rem);
+      color: var(--green-dark);
+      margin-bottom: 12px;
+    }
+
+    .contacts-subtitle {
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 34px;
+    }
+
+    .contact-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .contact-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      border-radius: 18px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      background: #ffffff;
+      color: var(--text-dark);
+      border: 1px solid rgba(7, 59, 39, 0.1);
+      box-shadow: 0 6px 20px rgba(7, 59, 39, 0.05);
+      transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s var(--ease-smooth), border-color 0.3s ease;
+    }
+
+    .contact-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(7, 59, 39, 0.11);
+      border-color: rgba(7, 59, 39, 0.25);
+    }
+
+    .contact-btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .icon-box {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .icon-wa {
+      background: linear-gradient(135deg, #25D366, #128C7E);
+    }
+
+    .icon-ig {
+      background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    }
+
+    .btn-meta {
+      text-align: left;
+    }
+
+    .btn-meta span {
+      display: block;
+    }
+
+    .btn-meta .btn-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .btn-meta .btn-handle {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .btn-arrow {
+      color: var(--text-muted);
+      transition: transform 0.3s var(--ease-smooth), color 0.3s ease;
+    }
+
+    .contact-btn:hover .btn-arrow {
+      transform: translateX(4px);
+      color: var(--green-main);
+    }
+
+    footer {
+      margin-top: 56px;
+      font-size: 0.8rem;
+      color: #83948c;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 
-    <header>
-        <div class="logo-container">
-            <img src="logo.png" alt="Logo Tutor" class="logo-img">
-        </div>
+  <!-- ================= SEZIONE HERO CAROSELLO ================= -->
+  <section class="hero" aria-label="Informazioni principali">
+
+    <!-- Logo circolare -->
+    <header class="top-header">
+      <div class="logo-wrapper">
+        <!-- Inserisci qui il percorso del tuo logo circolare -->
+        <img src="img/logo.png" alt="Andrea Pisano Ripetizioni">
+      </div>
     </header>
 
-    <section class="hero-carousel">
-        <div class="carousel-track" id="carouselTrack">
-            
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>Il Tuo Tutor</h2>
+    <!-- Frecce laterali desktop -->
+    <button class="nav-arrow prev" id="prevBtn" aria-label="Slide precedente">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 18 9 12 15 6"></polyline>
+      </svg>
+    </button>
+    <button class="nav-arrow next" id="nextBtn" aria-label="Slide successiva">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </button>
 
-                    <small style="font-size:1.2rem; font-weight:400; opacity:0.7"><b>Piacere, mi chiamo Andrea</b>. 
-                        Attualmente, sono uno studente di Ingegneria Aerospaziale al Politecnico di Milano. 
-                        <br>Offro servizi di tutoring personalizzato.<br>
- - Le mie aree di specializzazione principali includono: <br>
-   <b>Matematica, Fisica, Chimica e Informatica</b><br>
-Offro supporto anche su altre materie, a seconda delle vostre specifiche necessità.</small>
-                </div>
-            </div>
+    <!-- Carosello di facciate -->
+    <div class="carousel-track" id="carouselTrack">
 
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>Prima lezione gratuita</h2>
-                  
-                    <small style="font-size:1.2rem; font-weight:400; opacity:0.7"><b>La prima lezione che farete con me sarà totalmente gratuita.</b><br>
-Questa è la mia occasione per dimostrarvi il mio metodo di tutoring <br>e la vostra opportunità per valutare in prima persona se il mio approccio è quello giusto per voi.</small>
-                </div>
-            </div>
-
-<div class="slide">
-                <div class="slide-content">
-                    <h2>Test di ingresso universitari</h2>
-                    
-                    <small style="font-size:1.2rem; font-weight:400; opacity:0.7">Ad oggi frequento l'università grazie al test di ingresso anticipato che ho superato in quarta liceo,<br>
-                    nello specifico il TOLC-I cisia con un punteggio di 40,5/50.<br>
-                    Ho unicamente utilizzando materiali gratuiti online e metto a disposizione un tutoring riservato a questi test<br>
-                    dando, oltre al classico supporto negli esercizi e nella teoria, consigli e materiali utili che anch'io utilizzai.</small>
-                </div>
-            </div>
-            
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>Il Metodo</h2>
-                    <small style="font-size:1.2rem; font-weight:400; opacity:0.7">Le ripetizioni non dovrebbero servire solo per preparare una verifica o un’interrogazione, 
-                                                                                  ma piuttosto ad aiutare a sviluppare metodi di studio utili soprattutto fuori dalla scuola.<br></small>
-                    <ul>
-                        <li>Piani Personalizzati</li>
-                        <li>Supporto PRE-lezione<br>
-                        <small style="font-size:0.8rem; font-weight:400; opacity:0.7">Preparazione di dispense/appunti per massimizzare <br>le ore di ripetizioni.</small>
-                        </li>
-                        <li>Supporto POST-lezione<br>
-                        <small style="font-size:0.8rem; font-weight:400; opacity:0.7">Su richiesta, preparazione di schede di allenamento <br>basate sulle lacune emerse.</small></li>
-                    </ul>
-                </div>
-            </div>
-
-        <div class="slide">
-                <div class="slide-content">
-                    <h2>La mia disponibilità</h2>
-                    <small style="font-size:1rem; font-weight:400; opacity:0.7">Essendo uno studente frequentante, vi chiedo di tenere in considerazione alcuni periodi in cui non sarò disponibile:<br></small>
-                    <ul>
-                        <li>Prima sessione: Gennaio-inizio febbraio</li>
-                        <li>Seconda sessione: Giugno-metà luglio<br>
-                       
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="slide">
-                <div class="slide-content">
-                    <h2>Tariffe Trasparenti</h2>
-                    <div class="slide-table-container">
-                        <table class="modern-table">
-                            <tr>
-                                <td>
-                                    Lezione Singola
-                                    <span class="details">Per dubbi specifici o ripasso</span>
-                                </td>
-                                <td class="price">20€<br><small style="font-size:0.7rem; font-weight:400; opacity:0.7">/ora</small></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Videolezione singola
-                                    <span class="details">Tramite la piattaforma gratuita Meet, con lavagna 90x120cm per facilitare l'apprendimento</span>
-                                </td>
-                                <td class="price">15€<br><small style="font-size:0.7rem; font-weight:400; opacity:0.7">/ora</small></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    Preparazione test di ingresso
-                                    <span class="details">insegnamento/ripasso argomenti + materiali utili.</span>
-                                </td>
-                                <td class="price">25€<br><small style="font-size:0.7rem; font-weight:400; opacity:0.7">/ora</small></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
+      <!-- FACCIATA 1 -->
+      <article class="slide slide-1 is-active">
+        <div class="slide-content">
+          <span class="slide-tag">Chi sono</span>
+          <h1 class="slide-title">Il Tuo Tutor</h1>
+          <p class="slide-text">
+            Piacere, mi chiamo <strong>Andrea</strong>. Sono uno studente di
+            <strong>Ingegneria Aerospaziale al Politecnico di Milano</strong> e offro
+            lezioni private e supporto allo studio su misura.
+          </p>
+          <div class="pills">
+            <span class="pill">Matematica</span>
+            <span class="pill">Fisica</span>
+            <span class="pill">Chimica</span>
+            <span class="pill">Informatica</span>
+          </div>
+          <p class="slide-text" style="font-size: 0.92rem; opacity: 0.85;">
+            Supporto disponibile anche su altre materie in base alle tue esigenze.
+          </p>
         </div>
+      </article>
 
-        <div class="swipe-hint">
-            <div class="hand-icon">↔</div>
-            <div class="hint-text">Scorri</div>
+      <!-- FACCIATA 2 (Personalizzabile) -->
+      <article class="slide slide-2">
+        <div class="slide-content">
+          <span class="slide-tag">Approccio</span>
+          <h2 class="slide-title">Metodo Chiaro</h2>
+          <p class="slide-text">
+            Niente formule imparate a memoria: partiamo dalle basi per costruire un
+            <strong>metodo di ragionamento autonomo</strong>, con esercizi mirati
+            e schemi riassuntivi pensati per le tue verifiche ed esami.
+          </p>
         </div>
-    </section>
+      </article>
 
-    <section class="section-container" style="background-color: #f4f7f6;">
-        <h2 class="section-title">Risorse Gratuite (disponibili a breve)</h2>
-        <p style="color: #666;">per universitari e/o curiosi<br></p>
-        <div class="resources-grid">
-            <a href="#" class="resource-card">
-                <div>
-                    <strong>Fisica sperimentale: fondamenti</strong><br>
-                    <small style="color:#666">Coming soon...</small>
-                </div>
-                <div class="download-icon">📄</div>
-            </a>
-            <a href="#" class="resource-card">
-                <div>
-                    <strong>Matematica: Analisi e Geometria I</strong><br>
-                    <small style="color:#666">Teoremi e PDF utili</small>
-                </div>
-                <div class="download-icon">📄</div>
-            </a>
-            <a href="#" class="resource-card">
-                <div>
-                    <strong>Chimica: Fondamenti</strong><br>
-                    <small style="color:#666">Chimica inorganica</small>
-                </div>
-                <div class="download-icon">📄</div>
-            </a>
+      <!-- FACCIATA 3 (Personalizzabile) -->
+      <article class="slide slide-3">
+        <div class="slide-content">
+          <span class="slide-tag">Organizzazione</span>
+          <h2 class="slide-title">Lezioni Flessibili</h2>
+          <p class="slide-text">
+            Percorsi singoli o continuativi per <strong>scuole superiori e università</strong>,
+            con orari flessibili in presenza oppure comodamente online.
+          </p>
         </div>
-    </section>
+      </article>
 
-    <section class="section-container footer-contacts">
-        <h2 class="section-title">Contattami</h2>
-        <p style="color: #666;">Clicca sulle icone per scrivermi direttamente</p>
-        
-        <div class="social-icons">
-            <a href="https://wa.me/3926519029" target="_blank" class="social-btn" aria-label="WhatsApp">
-                <svg viewBox="0 0 24 24">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-                </svg>
-            </a>
+    </div>
 
-            <a href="https://instagram.com/ap.Ripetizioni" target="_blank" class="social-btn" aria-label="Instagram">
-                <svg viewBox="0 0 24 24">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                </svg>
-            </a>
-        </div>
+    <!-- Pallini di stato + Pulsante freccia giù -->
+    <div class="hero-bottom">
+      <div class="dots" id="carouselDots" role="tablist" aria-label="Seleziona slide"></div>
 
-        <div class="legal-text" >
-            Nota Legale: Servizio di ripetizioni private svolto in regime di prestazione occasionale (art. 2222 c.c.). 
-            Operazione fuori campo IVA ex art. 5 DPR 633/72.
-        </div>
-    </section>
+      <a href="#contatti" class="scroll-down-btn" id="scrollDownBtn" aria-label="Vai ai contatti">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </a>
+    </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const track = document.getElementById('carouselTrack');
-            const slides = Array.from(track.children);
-            const slideWidth = slides[0].getBoundingClientRect().width;
+  </section>
 
-            // Clona la prima e l'ultima slide per l'effetto infinito
-            
+  <!-- ================= SEZIONE CONTATTI ================= -->
+  <section class="contacts-section" id="contatti">
+    <div class="contacts-card" id="contactsCard">
+      <p class="contacts-label">Scrivimi</p>
+      <h2 class="contacts-title">Contatti</h2>
+      <p class="contacts-subtitle">
+        Hai dubbi su un argomento o vuoi prenotare una prima lezione? Scrivimi direttamente qui sotto.
+      </p>
 
-            track.addEventListener('scroll', () => {
-                if (isScrolling) return;
-                isScrolling = true;
+      <div class="contact-buttons">
 
-                clearTimeout(track.scrollTimeout);
-                track.scrollTimeout = setTimeout(() => {
-                    const scrollLeft = track.scrollLeft;
-                    const trackWidth = track.scrollWidth;
-                    
-                    if (scrollLeft + slideWidth >= trackWidth - 10) { // Fine
-                        track.classList.add('no-smooth');
-                        track.scrollLeft = slideWidth;
-                        setTimeout(() => { track.classList.remove('no-smooth'); }, 50);
-                    } else if (scrollLeft <= 10) { // Inizio
-                        track.classList.add('no-smooth');
-                        track.scrollLeft = trackWidth - (slideWidth * 2);
-                        setTimeout(() => { track.classList.remove('no-smooth'); }, 50);
-                    }
-                    isScrolling = false;
-                }, 200);
-            });
-        });
-    </script>
+        <!-- WhatsApp (sostituisci 39XXXXXXXXXX con il tuo numero) -->
+        <a
+          href="https://wa.me/39XXXXXXXXXX?text=Ciao%20Andrea%2C%20vorrei%20informazioni%20per%20delle%20ripetizioni"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contact-btn"
+        >
+          <div class="btn-left">
+            <div class="icon-box icon-wa">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.52 3.48A11.86 11.86 0 0 0 12.05 0C5.5 0 .16 5.33.16 11.89c0 2.1.55 4.14 1.59 5.95L0 24l6.33-1.66a11.87 11.87 0 0 0 5.71 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.16-3.42-8.42zM12.05 21.78h-.01a9.88 9.88 0 0 1-5.04-1.38l-.36-.21-3.76.98 1-3.66-.24-.38a9.86 9.86 0 0 1-1.51-5.24c0-5.45 4.44-9.89 9.9-9.89 2.64 0 5.13 1.03 7 2.9a9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.89-9.87 9.89zm5.42-7.41c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.21 5.09 4.5.71.31 1.27.49 1.7.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35z"/>
+              </svg>
+            </div>
+            <div class="btn-meta">
+              <span class="btn-name">WhatsApp</span>
+              <span class="btn-handle">Risposta rapida in chat</span>
+            </div>
+          </div>
+          <svg class="btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
 
+        <!-- Instagram (sostituisci tuo_username con il tuo profilo) -->
+        <a
+          href="https://instagram.com/tuo_username"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contact-btn"
+        >
+          <div class="btn-left">
+            <div class="icon-box icon-ig">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </div>
+            <div class="btn-meta">
+              <span class="btn-name">Instagram</span>
+              <span class="btn-handle">@tuo_username</span>
+            </div>
+          </div>
+          <svg class="btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+
+      </div>
+
+      <footer>
+        © 2026 Andrea Pisano Ripetizioni
+      </footer>
+    </div>
+  </section>
+
+  <script>
+    const track = document.getElementById('carouselTrack');
+    const slides = Array.from(track.querySelectorAll('.slide'));
+    const dotsContainer = document.getElementById('carouselDots');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+
+    let currentIndex = 0;
+
+    // Genera automaticamente un pallino per ogni slide presente nell'HTML
+    slides.forEach((_, index) => {
+      const dot = document.createElement('button');
+      dot.classList.add('dot');
+      if (index === 0) dot.classList.add('active');
+      dot.setAttribute('aria-label', `Vai alla slide ${index + 1}`);
+      dot.addEventListener('click', () => goToSlide(index));
+      dotsContainer.appendChild(dot);
+    });
+
+    const dots = Array.from(dotsContainer.querySelectorAll('.dot'));
+
+    function updateUI(index) {
+      currentIndex = index;
+      slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index));
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === index));
+      prevBtn.style.opacity = index === 0 ? '0.35' : '1';
+      nextBtn.style.opacity = index === slides.length - 1 ? '0.35' : '1';
+    }
+
+    function goToSlide(index) {
+      const clamped = Math.max(0, Math.min(index, slides.length - 1));
+      track.scrollTo({
+        left: clamped * track.clientWidth,
+        behavior: 'smooth'
+      });
+    }
+
+    // Aggiorna pallini e animazione testo durante lo swipe
+    let scrollRaf;
+    track.addEventListener('scroll', () => {
+      cancelAnimationFrame(scrollRaf);
+      scrollRaf = requestAnimationFrame(() => {
+        const index = Math.round(track.scrollLeft / track.clientWidth);
+        if (index !== currentIndex) updateUI(index);
+      });
+    }, { passive: true });
+
+    prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+    nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+    // Navigazione da tastiera su desktop
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') goToSlide(currentIndex + 1);
+      if (e.key === 'ArrowLeft') goToSlide(currentIndex - 1);
+    });
+
+    // Animazione fade-up fluida per la sezione contatti
+    const contactsCard = document.getElementById('contactsCard');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    observer.observe(contactsCard);
+    updateUI(0);
+  </script>
 </body>
 </html>
